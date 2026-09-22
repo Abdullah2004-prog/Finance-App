@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ledger — {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="side-nav">
+            <div class="brand">
+                <span class="brand-mark">$</span>
+                <span class="brand-name">Ledger</span>
+            </div>
+            <nav>
+                <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.path == '/' }}">Overview</a>
+                <a href="{{ url_for('add_transaction') }}" class="{{ 'active' if request.path == '/add' }}">Add entry</a>
+                <a href="{{ url_for('list_transactions') }}" class="{{ 'active' if request.path == '/transactions' }}">All entries</a>
+                <a href="{{ url_for('summary') }}" class="{{ 'active' if request.path == '/summary' }}">Monthly summary</a>
+                <a href="{{ url_for('limits') }}" class="{{ 'active' if request.path == '/limits' }}">Limits & goal</a>
+            </nav>
+
+            <div class="side-nav-footer">
+                <span class="current-user">{{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="logout-link">Log out</a>
+            </div>
+        </aside>
+
+        <main class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

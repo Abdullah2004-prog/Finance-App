@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}All entries{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{{ 'Entries for selected month' if is_filtered else 'All entries' }}</h1>
+    <p class="page-sub">{{ transactions|length }} shown.</p>
+</header>
+
+<div class="month-filter">
+    <label for="month_select">Viewing</label>
+    <select id="month_select" onchange="window.location.href=this.value">
+        <option value="{{ url_for('list_transactions') }}" {{ 'selected' if not is_filtered }}>All time</option>
+        {% for opt in month_options %}
+        <option value="{{ url_for('list_transactions', month=opt.month, year=opt.year) }}" {{ 'selected' if is_filtered and selected_month == opt.month and selected_year == opt.year }}>
+            {{ opt.label }}
+        </option>
+        {% endfor %}
+    </select>
+</div>
+
+{% if transactions %}
+<table class="ledger-table">
+    <thead>
+        <tr><th>Date</th><th>Type</th><th>Category</th><th>Payment</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.date }}</td>
+            <td>{{ t.__class__.__name__ }}</td>
+            <td>{{ t.category }}</td>
+            <td>{{ t.payment_type }}</td>
+            <td class="amount {{ 'amount-in' if t.__class__.__name__ == 'Income' else 'amount-out' }}">
+                {{ '+' if t.__class__.__name__ == 'Income' else '-' }}{{ "%.2f"|format(t.amount) }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty-note">No entries yet — <a href="{{ url_for('add_transaction') }}">add one</a>.</p>
+{% endif %}
+{% endblock %}

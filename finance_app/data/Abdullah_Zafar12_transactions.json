@@ -1,0 +1,16 @@
+[
+    {
+        "type": "Income",
+        "date": "2026-09-20",
+        "amount": 100000.0,
+        "category": "Salary",
+        "payment_type": "cash"
+    },
+    {
+        "type": "Expense",
+        "date": "2026-09-21",
+        "amount": 4500.0,
+        "category": "Food",
+        "payment_type": "cash"
+    }
+]

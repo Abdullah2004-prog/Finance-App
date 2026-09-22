@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Add entry{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>Add entry</h1>
+    <p class="page-sub">Log an income or expense transaction.</p>
+</header>
+
+<form class="entry-form" method="POST" action="{{ url_for('add_transaction') }}">
+    <div class="type-toggle">
+        <label class="type-option">
+            <input type="radio" name="type" value="income" checked>
+            <span>Income</span>
+        </label>
+        <label class="type-option">
+            <input type="radio" name="type" value="expense">
+            <span>Expense</span>
+        </label>
+    </div>
+
+    <div class="field-row">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required>
+    </div>
+
+    <div class="field-row">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" name="amount" step="0.01" min="0" required>
+    </div>
+
+    <div class="field-row">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            {% for c in categories %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="field-row">
+        <label for="payment_type">Payment type</label>
+        <input type="text" id="payment_type" name="payment_type" placeholder="Cash, Card, Bank Transfer..." required>
+    </div>
+
+    <button type="submit" class="primary-btn">Save entry</button>
+</form>
+{% endblock %}

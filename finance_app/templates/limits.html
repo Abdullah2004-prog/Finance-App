@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Limits & goal{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>Limits & goal</h1>
+    <p class="page-sub">Set a spending limit per category, or update your savings goal.</p>
+</header>
+
+<section class="current-limits">
+    <h2>Current limits</h2>
+    {% if current_limits %}
+        <ul class="limit-list">
+            {% for category, amount in current_limits.items() %}
+            <li><span>{{ category }}</span><span>{{ "%.2f"|format(amount) }}</span></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="empty-note">No limits set yet.</p>
+    {% endif %}
+    <p class="goal-line">Savings goal: {{ "%.2f"|format(current_goal) if current_goal is not none else "not set" }}</p>
+</section>
+
+<form class="entry-form" method="POST" action="{{ url_for('limits') }}">
+    <div class="field-row">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            {% for c in categories %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="field-row">
+        <label for="amount">Limit amount</label>
+        <input type="number" id="amount" name="amount" step="0.01" min="0">
+    </div>
+    <div class="field-row">
+        <label for="savings_goal">Savings goal (optional)</label>
+        <input type="number" id="savings_goal" name="savings_goal" step="0.01" min="0">
+    </div>
+    <button type="submit" class="primary-btn">Save changes</button>
+</form>
+{% endblock %}

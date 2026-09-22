@@ -1,0 +1,27 @@
+{% extends "auth_base.html" %}
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+<h1 class="auth-title">Create account</h1>
+<p class="auth-sub">Your data is kept separate from every other account.</p>
+
+<form class="entry-form auth-form" method="POST" action="{{ url_for('register') }}">
+    <div class="field-row">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+        <span class="field-hint">3-20 characters: letters, numbers, underscore only.</span>
+    </div>
+    <div class="field-row">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <span class="field-hint">At least 8 characters.</span>
+    </div>
+    <div class="field-row">
+        <label for="confirm">Confirm password</label>
+        <input type="password" id="confirm" name="confirm" required>
+    </div>
+    <button type="submit" class="primary-btn auth-btn">Create account</button>
+</form>
+
+<p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+{% endblock %}

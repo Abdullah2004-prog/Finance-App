@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Monthly summary{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>Monthly summary</h1>
+    <p class="page-sub">Category totals for a chosen month, checked against your limits.</p>
+</header>
+
+<form class="inline-form" method="POST" action="{{ url_for('summary') }}">
+    <div class="field-row">
+        <label for="month">Month</label>
+        <input type="number" id="month" name="month" min="1" max="12" value="{{ month or '' }}" required>
+    </div>
+    <div class="field-row">
+        <label for="year">Year</label>
+        <input type="number" id="year" name="year" value="{{ year or '' }}" required>
+    </div>
+    <button type="submit" class="primary-btn">Show summary</button>
+</form>
+
+{% if rows is not none %}
+    {% if rows %}
+    <table class="ledger-table">
+        <thead>
+            <tr><th>Category</th><th>Spent</th><th>Limit</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.category }}</td>
+                <td>{{ "%.2f"|format(row.spent) }}</td>
+                <td>{{ row.limit if row.limit == "N/A" else "%.2f"|format(row.limit) }}</td>
+                <td>
+                    <span class="status-pill status-{{ row.status|lower }}">{{ row.status }}</span>
+                    {% if row.alert %}
+                        <div class="row-alert row-alert-{{ row.alert.level }}">{{ row.alert.message }}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-note">No entries found for that month.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

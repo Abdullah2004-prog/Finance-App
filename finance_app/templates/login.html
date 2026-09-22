@@ -1,0 +1,21 @@
+{% extends "auth_base.html" %}
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<h1 class="auth-title">Log in</h1>
+<p class="auth-sub">Welcome back — enter your details below.</p>
+
+<form class="entry-form auth-form" method="POST" action="{{ url_for('login') }}">
+    <div class="field-row">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+    </div>
+    <div class="field-row">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit" class="primary-btn auth-btn">Log in</button>
+</form>
+
+<p class="auth-switch">Don't have an account? <a href="{{ url_for('register') }}">Create one</a></p>
+{% endblock %}
