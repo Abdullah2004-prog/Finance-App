@@ -138,6 +138,28 @@ class CSVStorage(StorageManager):
             return [transaction_from_dict(row) for row in reader]
 
 
+class DualStorage(StorageManager):
+    """Saves to JSON and CSV together, every time. JSON stays the source of
+    truth for reading; CSV is kept as an always-up-to-date mirror on disk."""
+
+    def __init__(self, json_filepath):
+        super().__init__(json_filepath)
+        self._json_storage = JSONStorage(json_filepath)
+
+        if json_filepath.endswith(".json"):
+            csv_filepath = json_filepath[:-5] + ".csv"
+        else:
+            csv_filepath = json_filepath + ".csv"
+        self._csv_storage = CSVStorage(csv_filepath)
+
+    def save(self, transactions):
+        self._json_storage.save(transactions)   # source of truth
+        self._csv_storage.save(transactions)     # auto-updated mirror
+
+    def load(self):
+        return self._json_storage.load()
+
+
 class Budget:
     def __init__(self):
         self._limits = {}

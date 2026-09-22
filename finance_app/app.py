@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from models import (
-    Income, Expense, Category, JSONStorage,
+    Income, Expense, Category, DualStorage,
     calculate_balance, filter_by_month, available_months,
     save_budget, load_budget
 )
@@ -25,9 +25,11 @@ with open(SECRET_KEY_FILE, "r") as f:
 
 
 def user_storage():
-    """Each logged-in user gets their own transactions file."""
+    """Each logged-in user gets their own transactions file.
+    DualStorage keeps a JSON copy (source of truth) and a CSV copy
+    (auto-updated mirror) in sync on every save."""
     username = current_username()
-    return JSONStorage(f"data/{username}_transactions.json")
+    return DualStorage(f"data/{username}_transactions.json")
 
 
 def user_budget_path():
@@ -264,4 +266,7 @@ def limits():
 
 
 if __name__ == "__main__":
+    # debug=True is only for local testing on your own machine —
+    # never leave this on for a publicly hosted app (PythonAnywhere
+    # runs this file through WSGI, so this block doesn't even execute there)
     app.run(debug=True)
