@@ -8,7 +8,8 @@
 <form class="entry-form auth-form" method="POST" action="{{ url_for('register') }}">
     <div class="field-row">
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" required autofocus>
+        <input type="text" id="username" name="username" required autofocus
+               autocapitalize="none" autocorrect="off" spellcheck="false">
         <span class="field-hint">3-20 characters: letters, numbers, underscore only.</span>
     </div>
     <div class="field-row">

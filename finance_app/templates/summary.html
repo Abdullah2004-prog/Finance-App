@@ -21,6 +21,7 @@
 
 {% if rows is not none %}
     {% if rows %}
+    <div class="table-scroll">
     <table class="ledger-table">
         <thead>
             <tr><th>Category</th><th>Spent</th><th>Limit</th><th>Status</th></tr>
@@ -41,6 +42,7 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
     {% else %}
     <p class="empty-note">No entries found for that month.</p>
     {% endif %}

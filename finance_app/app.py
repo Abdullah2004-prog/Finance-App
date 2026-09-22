@@ -75,6 +75,8 @@ def login():
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
 
+        print(f"DEBUG LOGIN ATTEMPT: username={username!r} password_len={len(password)}", flush=True)
+
         if verify_user(username, password):
             session["username"] = username
             next_page = request.args.get("next")
